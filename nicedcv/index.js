@@ -6,7 +6,13 @@ let auth,
 
 function onPromptCredentials(auth, challenge) {
     console.log("Came here");
-    auth.sendCredentials({username: "ubuntu", password: "Intern@123"})
+    if (challengeHasField(challenge, "username") && challengeHasField(challenge, "password")) {
+        console.log("Came here If");
+        auth.sendCredentials({username: "ubuntu", password: "Intern@123"})
+    } else {
+        console.log("Came here Else");
+        // Challenge is requesting something else...
+    }
 }
 
 function challengeHasField(challenge, field) {
@@ -46,20 +52,14 @@ function main () {
     dcv.setLogLevel(dcv.LogLevel.INFO);
     serverUrl = "https://ec2-3-86-24-118.compute-1.amazonaws.com:8443/";
     console.log("Starting authentication with", serverUrl);
-    dcv.connect({
-      url: serverUrl,
-      sessionId: "",
-      authToken: "",
-      divId: "dcv-display",
-      callbacks: {
-          firstFrame: () => console.log("First frame received")
-      }
-  }).then(function (conn) {
-      console.log("Connection established!");
-      connection= conn;
-  }).catch(function (error) {
-      console.log("Connection failed with error " + error.message);
-  });
+    auth = dcv.authenticate(
+        serverUrl,
+        {
+            promptCredentials: onPromptCredentials,
+            error: onError,
+            success: onSuccess
+        }
+    );
 }
 
 console.log("Using NICE DCV Web Client SDK version " + dcv.version.versionStr);

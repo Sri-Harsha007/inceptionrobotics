@@ -15,7 +15,7 @@
             "name": "Python: Django",
             "type": "python",
             "request": "launch",
-            "program": "C:\\Users\\Sri Harsha\\Desktop\\InceptionRobotics\\inceptionrobotics\\manage.py",
+            "program": "C:\\Users\\Sri Harsha\\Desktop\\InceptionRobotics\\inceptionrobotics_backend\\manage.py",
             "args": [
                 "runserver"
             ],
